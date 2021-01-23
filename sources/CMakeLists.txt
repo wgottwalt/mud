@@ -1,3 +1,5 @@
+ADD_LIBRARY           (Util STATIC UtilString.cxx)
+
 ADD_LIBRARY           (Net STATIC NetConnection.cxx NetServer.cxx)
 TARGET_LINK_LIBRARIES (Net ${boost_LIBRARIES})
 
