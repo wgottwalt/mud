@@ -23,6 +23,9 @@ namespace Mud::Support::Concepts
     concept Number = std::is_integral_v<T> || std::is_floating_point_v<T>;
 
     template <typename T>
+    concept Enum = std::is_enum_v<T>;
+
+    template <typename T>
     concept Class = std::is_class_v<T>;
 
     template <typename T, size_t MinSize = 1, size_t MaxSize = std::numeric_limits<size_t>::max()>
