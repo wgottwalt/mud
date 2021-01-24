@@ -1,1 +1,1 @@
-ADD_LIBRARY (Util STATIC String.cxx)
+ADD_LIBRARY (Support STATIC String.cxx)
