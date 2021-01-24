@@ -1,1 +1,1 @@
-ADD_LIBRARY (Log STATIC Defaults.cxx)
+#ADD_LIBRARY (Log STATIC )
