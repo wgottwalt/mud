@@ -1,1 +1,1 @@
-#ADD_LIBRARY (Log STATIC )
+ADD_LIBRARY (Log STATIC Receiver.cxx)
