@@ -1,5 +1,5 @@
 #include <iostream>
-#include "NetServer.hxx"
+#include "Server.hxx"
 
 using namespace Mud::Net;
 

@@ -3,7 +3,7 @@
 #include <functional>
 #include <iosfwd>
 #include <string>
-#include "NetDefaults.hxx"
+#include "Defaults.hxx"
 
 namespace Mud::Net
 {

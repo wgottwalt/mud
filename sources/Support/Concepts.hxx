@@ -5,7 +5,7 @@
 #include <tuple>
 #include <type_traits>
 
-namespace Mud::Concepts
+namespace Mud::Support::Concepts
 {
     template <typename T>
     concept Integer = std::is_integral_v<T>;

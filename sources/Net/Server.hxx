@@ -1,7 +1,7 @@
 #pragma once
 
 #include <list>
-#include "NetConnection.hxx"
+#include "Connection.hxx"
 
 namespace Mud::Net
 {

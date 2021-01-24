@@ -1,5 +1,5 @@
 #include <iostream>
-#include "NetConnection.hxx"
+#include "Connection.hxx"
 
 using namespace Mud::Net;
 

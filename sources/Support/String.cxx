@@ -1,6 +1,6 @@
-#include "UtilString.hxx"
+#include "String.hxx"
 
-using namespace Mud::Util;
+using namespace Mud::Support::String;
 
 std::string trim(const std::string &data, const char delim, const bool at_start,
                  const bool at_end)

@@ -1,5 +1,5 @@
 #include <iostream>
-#include "NetServer.hxx"
+#include "Net/Server.hxx"
 
 int32_t main()
 {

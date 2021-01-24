@@ -3,7 +3,7 @@
 #include <sstream>
 #include <string>
 
-namespace Mud::Util
+namespace Mud::Support::String
 {
     template <typename H, typename... T>
     std::string str(const H &head, const T &...tail)

@@ -1,4 +1,4 @@
-#include "LogDefaults.hxx"
+#include "Defaults.hxx"
 
 using namespace Mud::Log;
 
