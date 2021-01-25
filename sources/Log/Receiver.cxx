@@ -105,7 +105,7 @@ Receiver::Receiver(const std::string &path, const std::string &info, const std::
 {
     if (_log_to_file)
     {
-        const std::string startmsg = STR::str("[", TIME::dateToString(TIME::now()), "] -----\n");
+        const std::string startmsg = STR::str("[", TIME::toDateString(TIME::now()), "] -----\n");
 
         _info_file << startmsg;
         _warn_file << startmsg;
