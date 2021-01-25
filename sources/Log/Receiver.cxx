@@ -74,24 +74,24 @@ void Receiver::addEntry(Entry &&entry)
     switch (entry.level)
     {
         case Level::Info:
-            processInfo(std::move(entry));
+            processInfo(std::forward<Entry>(entry));
             break;
 
         case Level::Warn:
-            processWarn(std::move(entry));
+            processWarn(std::forward<Entry>(entry));
             break;
 
         case Level::Error:
-            processError(std::move(entry));
+            processError(std::forward<Entry>(entry));
             break;
 
         case Level::Fatal:
-            processFatal(std::move(entry));
+            processFatal(std::forward<Entry>(entry));
             break;
 
         case Level::Debug:
         default:
-            processDebug(std::move(entry));
+            processDebug(std::forward<Entry>(entry));
     }
 }
 
