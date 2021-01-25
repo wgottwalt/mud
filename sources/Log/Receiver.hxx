@@ -30,7 +30,7 @@ namespace Mud::Log
         bool logToFile() const noexcept;
         std::string logFilePath(const Level level) const;
         void setConsoleOutput(std::ostream &os);
-        void addEntry(const Entry &entry);
+        void addEntry(Entry &&entry);
 
     protected:
         //--- protected constructors ---
@@ -40,6 +40,11 @@ namespace Mud::Log
 
         //--- protected methods ---
         bool isLogToFileAvailable();
+        void processInfo(Entry &&entry);
+        void processWarn(Entry &&entry);
+        void processError(Entry &&entry);
+        void processFatal(Entry &&entry);
+        void processDebug(Entry &&entry);
 
     private:
         //--- private properties ---
@@ -55,8 +60,7 @@ namespace Mud::Log
         std::ofstream _fatal_file;
         std::ofstream _debug_file;
         std::ostream &_console;
-        std::mutex _file_mutex;
-        std::mutex _console_mutex;
+        std::mutex _mutexes[6];
         bool _file_log_available;
         bool _log_to_console;
         bool _log_to_file;
