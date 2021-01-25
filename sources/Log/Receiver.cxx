@@ -103,6 +103,16 @@ Receiver::Receiver(const std::string &path, const std::string &info, const std::
   _debug_name(debug), _console(std::cout), _mutexes(), _file_log_available(isLogToFileAvailable()),
   _log_to_console(true), _log_to_file(_file_log_available)
 {
+    if (_log_to_file)
+    {
+        const std::string startmsg = STR::str("[", TIME::dateToString(TIME::now()), "] -----\n");
+
+        _info_file << startmsg;
+        _warn_file << startmsg;
+        _error_file << startmsg;
+        _fatal_file << startmsg;
+        _debug_file << startmsg;
+    }
 }
 
 Receiver::~Receiver()
