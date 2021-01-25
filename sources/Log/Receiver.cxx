@@ -118,11 +118,11 @@ bool Receiver::isLogToFileAvailable()
 
     if (FS::exists(_log_path) && FS::is_directory(_log_path))
     {
-        _info_file.open(_log_path + "/" + _info_name);
-        _warn_file.open(_log_path + "/" + _warn_name);
-        _error_file.open(_log_path + "/" + _error_name);
-        _fatal_file.open(_log_path + "/" + _fatal_name);
-        _debug_file.open(_log_path + "/" + _debug_name);
+        _info_file.open(_log_path + "/" + _info_name, std::ios::app);
+        _warn_file.open(_log_path + "/" + _warn_name, std::ios::app);
+        _error_file.open(_log_path + "/" + _error_name, std::ios::app);
+        _fatal_file.open(_log_path + "/" + _fatal_name, std::ios::app);
+        _debug_file.open(_log_path + "/" + _debug_name, std::ios::app);
 
         if (_info_file && _warn_file && _error_file && _fatal_file && _debug_file)
             return true;
