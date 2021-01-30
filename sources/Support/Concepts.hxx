@@ -5,6 +5,25 @@
 #include <tuple>
 #include <type_traits>
 
+namespace ext
+{
+    template <typename>
+    struct __is_function_pointer_helper
+    : public std::false_type { };
+
+    template<typename _Tp>
+    struct __is_function_pointer_helper<_Tp *>
+    : public std::__or_<std::is_pointer<_Tp>,
+                        std::is_function<std::remove_pointer_t<_Tp>>> { };
+
+    template <typename _Tp>
+    struct is_function_pointer
+    : public __is_function_pointer_helper<std::__remove_cv_t<_Tp>>::type { };
+
+    template <typename _Tp>
+    inline constexpr bool is_function_pointer_v = is_function_pointer<_Tp>::value;
+}
+
 namespace Mud::Support::Concepts
 {
     template <typename T>
@@ -27,6 +46,9 @@ namespace Mud::Support::Concepts
 
     template <typename T>
     concept Class = std::is_class_v<T>;
+
+    template <typename T>
+    concept FunctionPointer = ext::is_function_pointer_v<T> || std::is_member_function_pointer_v<T>;
 
     template <typename T, size_t MinSize = 1, size_t MaxSize = std::numeric_limits<size_t>::max()>
     concept Tuple = requires (T val){ {std::get<0>(val)}; } &&
