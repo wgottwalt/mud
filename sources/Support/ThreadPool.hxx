@@ -1,5 +1,6 @@
 #pragma once
 
+#include <atomic>
 #include <condition_variable>
 #include <functional>
 #include <future>
@@ -11,37 +12,40 @@
 
 namespace Mud::Support::Thread
 {
-    template <typename Thread = std::thread, template <typename> typename Container = std::list,
+    template <template <typename> typename Container = std::list,
               template <typename> typename Queue = std::queue>
     class Pool {
     public:
         //--- public types and constants ---
-        using Callable = std::function<void()>;
+        using Task = std::function<void()>;
 
         //--- public constructors ---
         Pool(const uint32_t num_threads = std::thread::hardware_concurrency())
-        : _threads(), _callables(), _mutex(), _cv(), _max_threads(num_threads), _halt(false)
+        : _threads(), _tasks(), _mutex(), _cv(), _tasks_added(0), _active_threads(0), _halt(false)
         {
-            for (uint32_t i = 0; i < _max_threads; ++i)
+            for (uint32_t i = 0; i < num_threads; ++i)
             {
                 _threads.emplace_back(
                     [this]()
                     {
                         while (true)
                         {
-                            Callable callable;
+                            Task task;
+
                             {
                                 std::unique_lock<std::mutex> lock(_mutex);
 
-                                _cv.wait(lock, [this](){ return _halt || !_callables.empty(); });
-
-                                if (_halt && _callables.empty())
+                                _cv.wait(lock, [this](){ return _halt || !_tasks.empty(); });
+                                if (_halt && _tasks.empty())
                                     return;
 
-                                callable = std::move(_callables.front());
-                                _callables.pop();
+                                task = std::move(_tasks.front());
+                                _tasks.pop();
                             }
-                            callable();
+
+                            ++_active_threads;
+                            task();
+                            --_active_threads;
                         }
                     });
             }
@@ -52,14 +56,9 @@ namespace Mud::Support::Thread
 
         ~Pool()
         {
-            {
-                std::unique_lock<std::mutex> lock(_mutex);
-                _halt = true;
-            }
-
+            _halt = true;
             _cv.notify_all();
-            for (auto &thread : _threads)
-                thread.join();
+            _threads.clear();
         }
 
         //--- public operators ---
@@ -67,47 +66,56 @@ namespace Mud::Support::Thread
         Pool &operator=(Pool &&rhs) = delete;
 
         //--- public methods ---
-        uint32_t maxHardwareThreads() const noexcept
+        uint32_t maxThreads() const noexcept
         {
-            return std::thread::hardware_concurrency();
+            return _threads.size();
         }
 
-        uint32_t maxThread() const noexcept
+        uint32_t activeThreads() const noexcept
         {
-            return _max_threads;
+            return _active_threads;
         }
 
-        size_t threadCount() const
+        uint64_t tasksAdded() const noexcept
         {
-            return _callables.size();
+            return _tasks_added;
+        }
+
+        uint64_t tasksInQueue() const noexcept
+        {
+            return _tasks.size();
         }
 
         template <typename F, typename ...Args>
-        auto add(F &&func, Args &&...args)-> std::future<std::result_of_t<F(Args...)>>
+        auto add(F &&func, Args &&...args) -> std::future<std::result_of_t<F(Args...)>>
         {
-            auto callable = std::make_shared<std::packaged_task<std::result_of_t<F(Args...)>()>>(
-                            std::bind(std::forward<F>(func), std::forward<Args>(args)...));
-            auto result = callable->get_future();
+            if (!_halt)
             {
-                std::unique_lock<std::mutex> lock(_mutex);
+                auto task = std::make_shared<std::packaged_task<std::result_of_t<F(Args...)>()>>(
+                            std::bind(std::forward<F>(func), std::forward<Args>(args)...));
+                auto result = task->get_future();
 
-                if (_halt)
-                    throw std::runtime_error("ThreadPool already haltet");
+                {
+                    std::unique_lock<std::mutex> lock(_mutex);
+                    _tasks.emplace([task](){ (*task)(); });
+                }
+                ++_tasks_added;
+                _cv.notify_one();
 
-                _callables.emplace([callable](){ (*callable)(); });
+                return result;
             }
-            _cv.notify_one();
 
-            return result;
+            throw std::runtime_error("ThreadPool already haltet");
         }
 
     private:
         //--- private properties ---
-        Container<Thread> _threads;
-        Queue<Callable> _callables;
+        Container<std::jthread> _threads;
+        Queue<Task> _tasks;
         std::mutex _mutex;
         std::condition_variable _cv;
-        uint32_t _max_threads;
-        bool _halt;
+        std::atomic<uint64_t> _tasks_added;
+        std::atomic<uint32_t> _active_threads;
+        std::atomic<bool> _halt;
     };
 }
