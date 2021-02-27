@@ -18,7 +18,14 @@ namespace Mud::Support::String
         return strm.str();
     }
 
-    std::string trim(const std::string &data, const char delim, const bool at_start = true,
+    void trim(std::string &str, const char delim, const bool at_start = true,
+              const bool at_end = true);
+    std::string trim(const std::string &str, const char delim, const bool at_start = true,
                      const bool at_end = true);
-    std::string trim(const std::string &data, const bool at_start = true, const bool at_end = true);
+    std::string trim(std::string &&str, const char delim, const bool at_start = true,
+                     const bool at_end = true);
+
+    void trim(std::string &str, const bool at_start = true, const bool at_end = true);
+    std::string trim(const std::string &str, const bool at_start = true, const bool at_end = true);
+    std::string trim(std::string &&str, const bool at_start = true, const bool at_end = true);
 }
