@@ -1,12 +1,14 @@
 #include <iostream>
 #include "Connection.hxx"
+#include "Support/String.hxx"
 
 using namespace Mud::Net;
+namespace S = Mud::Support::String;
 
 //--- public constructors ---
 
 Connection::Connection(TCP::socket &&socket)
-: _socket(std::move(socket)), _removecb(nullptr)
+: _socket(std::move(socket)), _removecb(nullptr), _interface(*this)
 {
     receive();
 }
@@ -28,6 +30,7 @@ void Connection::send(const std::string &str)
     async_write(_socket, *buffer,
         [this,buffer,str](boost::system::error_code, size_t)
         {
+            std::cout << "server->client: " << S::trim(str) << std::endl;
         });
 }
 
@@ -44,8 +47,11 @@ void Connection::receive()
                 std::string line;
 
                 std::getline(strm, line);
-                std::cout << "client->server: " << line << std::endl;
+                std::cout << "client->server: " << S::trim(line) << std::endl;
+                _interface.process(line);
+
                 receive();
+
                 return;
             }
             executeRemoveCallback();

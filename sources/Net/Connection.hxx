@@ -4,6 +4,7 @@
 #include <iosfwd>
 #include <string>
 #include "Defaults.hxx"
+#include "Session/Interface.hxx"
 
 namespace Mud::Net
 {
@@ -33,5 +34,6 @@ namespace Mud::Net
         //--- private properties ---
         TCP::socket _socket;
         RemoveCallback _removecb;
+        Session::Interface _interface;
     };
 }
