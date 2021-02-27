@@ -48,12 +48,6 @@ namespace Mud::Support::String
     }
 
     template <bool Begin = true, bool End = true>
-    void trim(std::string &str, const char delim)
-    {
-        Impl::__trim<Begin,End>(std::move(str), delim);
-    }
-
-    template <bool Begin = true, bool End = true>
     std::string trim(const std::string &str, const char delim)
     {
         std::string tmp(str);
@@ -65,12 +59,6 @@ namespace Mud::Support::String
     std::string trim(std::string &&str, const char delim)
     {
         return Impl::__trim<Begin,End>(std::move(str), delim);
-    }
-
-    template <bool Begin = true, bool End = true>
-    void trim(std::string &str)
-    {
-        Impl::__trim<Begin,End>(std::move(str));
     }
 
     template <bool Begin = true, bool End = true>
