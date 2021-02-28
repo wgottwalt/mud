@@ -8,7 +8,7 @@ namespace S = Mud::Support::String;
 //--- public constructors ---
 
 Interface::Interface(Net::Connection &connection)
-: _connection(connection), _state(State::New)
+: _connection(connection), _username(), _password(), _state(State::New), _passed(false)
 {
     process();
 }
@@ -45,4 +45,9 @@ void Interface::process(const std::string &input)
         case State::Established:
             break;
     }
+}
+
+bool Interface::validLogin() const
+{
+    return !_username.empty() && !_password.empty() && _passed;
 }

@@ -30,6 +30,7 @@ namespace Mud::Session
 
         //--- public methods ---
         void process(const std::string &input = "");
+        bool validLogin() const;
 
     private:
         //--- private properties ---
@@ -37,5 +38,6 @@ namespace Mud::Session
         std::string _username;
         std::string _password;
         State _state;
+        bool _passed;
     };
 }
