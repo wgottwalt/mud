@@ -1,8 +1,10 @@
 #include <utility>
 #include "Sender.hxx"
 #include "Receiver.hxx"
+#include "Support/String.hxx"
 
 using namespace Mud::Log;
+namespace STR = Mud::Support::String;
 
 //--- public constructors ---
 
@@ -58,45 +60,50 @@ std::string Sender::componentName() const
 void Sender::log(const std::string &message, const std::string &component,
                  const T::Timepoint &stamp, const Level level) const
 {
-    commit(level, stamp, component, message);
+    commit(level, stamp, component.empty() ? _component : component, std::move(STR::trim(message)));
 }
 
 void Sender::info(const std::string &message, const std::string &component,
                   const T::Timepoint &stamp) const
 {
-    commit(Level::Info, stamp, component, message);
+    commit(Level::Info, stamp, component.empty() ? _component : component,
+           std::move(STR::trim(message)));
 }
 
 void Sender::warn(const std::string &message, const std::string &component,
                   const T::Timepoint &stamp) const
 {
-    commit(Level::Warn, stamp, component, message);
+    commit(Level::Warn, stamp, component.empty() ? _component : component,
+           std::move(STR::trim(message)));
 }
 
 void Sender::error(const std::string &message, const std::string &component,
                    const T::Timepoint &stamp) const
 {
-    commit(Level::Error, stamp, component, message);
+    commit(Level::Error, stamp, component.empty() ? _component : component,
+           std::move(STR::trim(message)));
 }
 
 void Sender::fatal(const std::string &message, const std::string &component,
                    const T::Timepoint &stamp) const
 {
-    commit(Level::Fatal, stamp, component, message);
+    commit(Level::Fatal, stamp, component.empty() ? _component : component,
+           std::move(STR::trim(message)));
 }
 
 void Sender::debug(const std::string &message, const std::string &component,
                    const T::Timepoint &stamp) const
 {
-    commit(Level::Debug, stamp, component, message);
+    commit(Level::Debug, stamp, component.empty() ? _component : component,
+           std::move(STR::trim(message)));
 }
 
 //--- protected methods ---
 
 void Sender::commit(const Level level, const T::Timepoint &stamp, const std::string &component,
-                    const std::string &message) const
+                    std::string &&message) const
 {
-    Entry entry{level, stamp, component, message};
+    Entry entry{level, stamp, component, std::move(message)};
 
     _receiver.addEntry(std::move(entry));
 }

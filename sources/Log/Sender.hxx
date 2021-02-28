@@ -39,7 +39,7 @@ namespace Mud::Log
     protected:
         //--- protected methods ---
         void commit(const Level level, const T::Timepoint &stamp, const std::string &component,
-                    const std::string &message) const;
+                    std::string &&message) const;
 
     private:
         //--- private properties ---
