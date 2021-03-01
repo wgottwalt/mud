@@ -28,6 +28,9 @@ namespace Mud::Support::String
         //--- public methods ---
         std::string &at(const size_t pos);
         std::string at(const size_t pos) const;
+        bool empty() const noexcept;
+        size_t maxSize() const noexcept;
+        size_t size() const noexcept;
 
     private:
         //--- private properties ---

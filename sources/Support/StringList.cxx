@@ -104,3 +104,18 @@ std::string List::at(const size_t pos) const
 
     return *it;
 }
+
+bool List::empty() const noexcept
+{
+    return _data.empty();
+}
+
+size_t List::maxSize() const noexcept
+{
+    return _data.max_size();
+}
+
+size_t List::size() const noexcept
+{
+    return _data.size();
+}
