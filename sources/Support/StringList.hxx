@@ -29,8 +29,10 @@ namespace Mud::Support::String
         std::string &at(const size_t pos);
         std::string at(const size_t pos) const;
         bool empty() const noexcept;
+        std::string join(const std::string &separator = " ") const;
         size_t maxSize() const noexcept;
         size_t size() const noexcept;
+        void split(const std::string &str, const std::string &separator = " ");
 
     private:
         //--- private properties ---
