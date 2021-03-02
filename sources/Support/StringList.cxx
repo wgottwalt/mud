@@ -112,29 +112,7 @@ bool List::empty() const noexcept
 
 std::string List::join(const std::string &separator) const
 {
-    std::string result;
-
-    if (_data.size() > 1)
-    {
-        if (separator.empty())
-        {
-            for (auto &str : _data)
-                result += str;
-        }
-        else
-        {
-            auto last_it = _data.end();
-
-            --last_it;
-            for (auto it = _data.begin(); it != last_it; ++it)
-                result += *it + separator;
-            result += *last_it;
-        }
-    }
-    else if (_data.size() == 1)
-        result = _data.front();
-
-    return result;
+    return join(*this, separator);
 }
 
 size_t List::maxSize() const noexcept
@@ -147,12 +125,39 @@ size_t List::size() const noexcept
     return _data.size();
 }
 
-void List::split(const std::string &str, const std::string &separator)
+std::string List::join(const List &list, const std::string &separator)
+{
+    std::string result;
+
+    if (list._data.size() > 1)
+    {
+        if (separator.empty())
+        {
+            for (auto &str : list._data)
+            result += str;
+        }
+        else
+        {
+            auto last_it = list._data.end();
+
+            --last_it;
+            for (auto it = list._data.begin(); it != last_it; ++it)
+                result += *it + separator;
+            result += *last_it;
+        }
+    }
+    else if (list.size() == 1)
+        result = list._data.front();
+
+    return result;
+}
+
+List List::split(const std::string &str, const std::string &separator)
 {
     if (str.empty() && separator.empty())
-        return;
+        return List();
 
-    std::list<std::string> result;
+    List list;
     size_t last_pos = -separator.size();
     size_t pos = 0;
 
@@ -160,10 +165,10 @@ void List::split(const std::string &str, const std::string &separator)
     {
         last_pos += separator.size();
         pos = str.find_first_of(separator, pos + 2);
-        result.emplace_back(str.substr(last_pos, pos - last_pos));
+        list._data.emplace_back(str.substr(last_pos, pos - last_pos));
         last_pos = pos;
     }
     while (pos != std::string::npos);
 
-    _data.swap(result);
+    return list;
 }

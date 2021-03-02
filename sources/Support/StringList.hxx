@@ -32,7 +32,9 @@ namespace Mud::Support::String
         std::string join(const std::string &separator = " ") const;
         size_t maxSize() const noexcept;
         size_t size() const noexcept;
-        void split(const std::string &str, const std::string &separator = " ");
+
+        static std::string join(const List &list, const std::string &separator = " ");
+        static List split(const std::string &str, const std::string &seperator = " ");
 
     private:
         //--- private properties ---
