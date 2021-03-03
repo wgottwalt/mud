@@ -27,6 +27,11 @@ List::List(const size_t count, const std::string &str)
 {
 }
 
+List::List(const std::string &str, const std::string &separator)
+: _data(std::move(split(str, separator)._data))
+{
+}
+
 List::List(std::string &&str)
 : _data{std::move(str)}
 {

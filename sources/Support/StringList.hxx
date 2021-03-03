@@ -13,6 +13,7 @@ namespace Mud::Support::String
         List(const size_t count);
         List(const std::string &str);
         List(const size_t count, const std::string &str);
+        List(const std::string &str, const std::string &separator);
         List(std::string &&str);
         List(const std::initializer_list<std::string> &list);
         List(const List &rhs);
