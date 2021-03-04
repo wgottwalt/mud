@@ -23,6 +23,10 @@ namespace Mud::Session
         std::string nextToken();
         void reset();
 
+    protected:
+        //--- protected methods ---
+        void process(const std::string &str);
+
     private:
         //--- private properties ---
         Support::String::List _input;

@@ -1,13 +1,16 @@
 #include <utility>
 #include "Tokenizer.hxx"
+#include "Support/String.hxx"
 
 using namespace Mud::Session;
+namespace S = Mud::Support::String;
 
 //--- public constructors ---
 
 Tokenizer::Tokenizer(const std::string &str)
-: _input(str, " "), _current_token(0)
+: _input(), _current_token(0)
 {
+    process(str);
 }
 
 Tokenizer::Tokenizer(const Tokenizer &rhs)
@@ -66,7 +69,7 @@ void Tokenizer::tokenize(const std::string &str)
     if (str.empty())
         return;
 
-    _input = { str, " " };
+    process(str);
     _current_token = 0;
 }
 
@@ -86,4 +89,16 @@ std::string Tokenizer::nextToken()
 void Tokenizer::reset()
 {
     _current_token = 0;
+}
+
+//--- protected methods ---
+void Tokenizer::process(const std::string &str)
+{
+    _input = S::List(str, " ");
+    for (size_t i = 0; i < _input.size(); ++i)
+    {
+        std::string tmp = S::trim(_input.at(i));
+        if (tmp.empty())
+            _input.erase(i);
+    }
 }
