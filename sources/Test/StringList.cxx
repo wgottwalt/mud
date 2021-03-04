@@ -16,5 +16,10 @@ int32_t main()
         std::cout << "_" << slist.at(i);
     std::cout << "\nrejoin (':::'): '" << slist.join(":::") << "'" << std::endl;
 
+    slist.erase(2);
+    std::cout << "erase third string: " << slist.join(":::") << "'" << std::endl;
+    slist.erase(6, 8);
+    std::cout << "erase last 3 strings: " << slist.join(":::") << "'" << std::endl;
+
     return 0;
 }
