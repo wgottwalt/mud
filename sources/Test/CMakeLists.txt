@@ -9,3 +9,6 @@ TARGET_LINK_LIBRARIES (TestLogReceiver Support)
 
 ADD_EXECUTABLE        (TestTimeSupport Time.cxx)
 TARGET_LINK_LIBRARIES (TestLogReceiver Support)
+
+ADD_EXECUTABLE        (TestTokenizer Tokenizer.cxx)
+TARGET_LINK_LIBRARIES (TestTokenizer Session Support)
