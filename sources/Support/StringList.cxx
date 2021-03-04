@@ -110,9 +110,49 @@ std::string List::at(const size_t pos) const
     return *it;
 }
 
+void List::clear() noexcept
+{
+    _data.clear();
+}
+
 bool List::empty() const noexcept
 {
     return _data.empty();
+}
+
+void List::erase(const size_t pos) noexcept
+{
+    if (pos >= _data.size())
+        return;
+
+    auto it = _data.begin();
+    std::advance(it, pos);
+    _data.erase(it);
+}
+
+void List::erase(const size_t pos_from, const size_t pos_to) noexcept
+{
+    if (pos_from >= _data.size())
+        return;
+
+    if (pos_from > pos_to)
+        return;
+
+    auto it = _data.begin();
+
+    if (pos_to >= _data.size())
+    {
+        std::advance(it, pos_from);
+        _data.erase(it, _data.end());
+
+        return;
+    }
+
+    auto it_to = _data.begin();
+
+    std::advance(it, pos_from);
+    std::advance(it_to, pos_to + 1);
+    _data.erase(it, it_to);
 }
 
 std::string List::join(const std::string &separator) const

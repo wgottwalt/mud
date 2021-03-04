@@ -29,7 +29,10 @@ namespace Mud::Support::String
         //--- public methods ---
         std::string &at(const size_t pos);
         std::string at(const size_t pos) const;
+        void clear() noexcept;
         bool empty() const noexcept;
+        void erase(const size_t pos) noexcept;
+        void erase(const size_t pos_from, const size_t pos_to) noexcept;
         std::string join(const std::string &separator = " ") const;
         size_t maxSize() const noexcept;
         size_t size() const noexcept;
