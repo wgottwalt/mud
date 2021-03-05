@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Support/StringList.hxx"
+#include <string>
 
 namespace Mud::Session
 {
@@ -19,17 +19,14 @@ namespace Mud::Session
         bool operator!=(const Tokenizer &rhs) const;
 
         //--- public methods ---
-        void tokenize(const std::string &str);
         std::string nextToken();
+        void reset(const std::string &str);
+        void reset(std::string &&rhs);
         void reset();
-
-    protected:
-        //--- protected methods ---
-        void process(const std::string &str);
 
     private:
         //--- private properties ---
-        Support::String::List _input;
-        size_t _current_token;
+        std::string _input;
+        size_t _pos;
     };
 }
