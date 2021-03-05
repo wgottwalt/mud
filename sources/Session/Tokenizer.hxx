@@ -9,22 +9,22 @@ namespace Mud::Session
         //--- public constructors ---
         Tokenizer(const std::string &str, const bool ascii = true);
         Tokenizer(const Tokenizer &rhs);
-        Tokenizer(Tokenizer &&rhs);
-        ~Tokenizer();
+        Tokenizer(Tokenizer &&rhs) noexcept;
+        ~Tokenizer() noexcept;
 
         //--- public operators ---
         Tokenizer &operator=(const Tokenizer &rhs);
-        Tokenizer &operator=(Tokenizer  &&rhs);
-        bool operator==(const Tokenizer &rhs) const;
-        bool operator!=(const Tokenizer &rhs) const;
+        Tokenizer &operator=(Tokenizer  &&rhs) noexcept;
+        bool operator==(const Tokenizer &rhs) const noexcept;
+        bool operator!=(const Tokenizer &rhs) const noexcept;
 
         //--- public methods ---
-        std::string input() const;
-        bool ascii() const;
+        std::string input() const noexcept;
+        bool ascii() const noexcept;
         std::string nextToken();
         void reset(const std::string &str, const bool ascii = true);
-        void reset(std::string &&rhs, const bool ascii = true);
-        void reset(const bool ascii = true);
+        void reset(std::string &&rhs, const bool ascii = true) noexcept;
+        void reset(const bool ascii = true) noexcept;
 
     private:
         //--- private properties ---

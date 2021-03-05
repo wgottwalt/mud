@@ -15,12 +15,12 @@ Tokenizer::Tokenizer(const Tokenizer &rhs)
 {
 }
 
-Tokenizer::Tokenizer(Tokenizer &&rhs)
+Tokenizer::Tokenizer(Tokenizer &&rhs) noexcept
 : _input(std::move(rhs._input)), _pos(std::move(rhs._pos)), _ascii(std::move(rhs._ascii))
 {
 }
 
-Tokenizer::~Tokenizer()
+Tokenizer::~Tokenizer() noexcept
 {
 }
 
@@ -38,7 +38,7 @@ Tokenizer &Tokenizer::operator=(const Tokenizer &rhs)
     return *this;
 }
 
-Tokenizer &Tokenizer::operator=(Tokenizer &&rhs)
+Tokenizer &Tokenizer::operator=(Tokenizer &&rhs) noexcept
 {
     if (this != &rhs)
     {
@@ -50,26 +50,26 @@ Tokenizer &Tokenizer::operator=(Tokenizer &&rhs)
     return *this;
 }
 
-bool Tokenizer::operator==(const Tokenizer &rhs) const
+bool Tokenizer::operator==(const Tokenizer &rhs) const noexcept
 {
     return _input == rhs._input &&
            _pos == rhs._pos &&
            _ascii == rhs._ascii;
 }
 
-bool Tokenizer::operator!=(const Tokenizer &rhs) const
+bool Tokenizer::operator!=(const Tokenizer &rhs) const noexcept
 {
     return !(*this == rhs);
 }
 
 //--- public methods ---
 
-std::string Tokenizer::input() const
+std::string Tokenizer::input() const noexcept
 {
     return _input;
 }
 
-bool Tokenizer::ascii() const
+bool Tokenizer::ascii() const noexcept
 {
     return _ascii;
 }
@@ -127,7 +127,7 @@ void Tokenizer::reset(const std::string &str, const bool ascii)
     }
 }
 
-void Tokenizer::reset(std::string &&str, const bool ascii)
+void Tokenizer::reset(std::string &&str, const bool ascii) noexcept
 {
     if (!str.empty())
     {
@@ -137,7 +137,7 @@ void Tokenizer::reset(std::string &&str, const bool ascii)
     }
 }
 
-void Tokenizer::reset(const bool ascii)
+void Tokenizer::reset(const bool ascii) noexcept
 {
     _pos = 0;
     _ascii = ascii;
