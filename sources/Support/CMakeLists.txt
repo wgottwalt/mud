@@ -1,1 +1,1 @@
-ADD_LIBRARY (Support STATIC StringList.cxx)
+ADD_LIBRARY (Support STATIC String.cxx StringList.cxx)

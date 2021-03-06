@@ -7,31 +7,7 @@ namespace Mud::Support::String
 {
     namespace Impl
     {
-        template <bool Begin, bool End>
-        std::string __trim(std::string &&str, const char delim)
-        {
-            if constexpr (Begin)
-                while (!str.empty() && (*(str.begin())) == delim)
-                    str.erase(str.begin(), str.begin() + 1);
-            if constexpr (End)
-                while (!str.empty() && (*(str.end() - 1)) == delim)
-                    str.erase(str.end() - 1, str.end());
-
-            return str;
-        }
-
-        template <bool Begin, bool End>
-        std::string __trim(std::string &&str)
-        {
-            if constexpr (Begin)
-                while (!str.empty() && std::isspace(*(str.begin())))
-                    str.erase(str.begin(), str.begin() + 1);
-            if constexpr (End)
-                while (!str.empty() && std::isspace(*(str.end() - 1)))
-                    str.erase(str.end() - 1, str.end());
-
-            return str;
-        }
+        using TestFunc = int32_t(*)(int32_t);
     }
 
     template <typename H, typename... T>
@@ -47,31 +23,14 @@ namespace Mud::Support::String
         return strm.str();
     }
 
-    template <bool Begin = true, bool End = true>
-    std::string trim(const std::string &str, const char delim)
-    {
-        std::string tmp(str);
-
-        return Impl::__trim<Begin,End>(std::move(tmp), delim);
-    }
-
-    template <bool Begin = true, bool End = true>
-    std::string trim(std::string &&str, const char delim)
-    {
-        return Impl::__trim<Begin,End>(std::move(str), delim);
-    }
-
-    template <bool Begin = true, bool End = true>
-    std::string trim(const std::string &str)
-    {
-        std::string tmp(str);
-
-        return Impl::__trim<Begin,End>(std::move(tmp));
-    }
-
-    template <bool Begin = true, bool End = true>
-    std::string trim(std::string &&str)
-    {
-        return Impl::__trim<Begin,End>(std::move(str));
-    }
+    std::string trim(const std::string &str, const bool at_begin = true, const bool at_end = true);
+    std::string trim(std::string &&str, const bool at_begin = true, const bool at_end = true);
+    std::string trim(const std::string &str, const char delim, const bool at_begin = true,
+                     const bool at_end = true);
+    std::string trim(std::string &&str, const char delim, const bool at_begin = true,
+                     const bool at_end = true);
+    std::string trim(const std::string &str, Impl::TestFunc cb, const bool at_begin = true,
+                     const bool at_end = true, const bool neg = true);
+    std::string trim(std::string &&str, Impl::TestFunc cb, const bool at_begin = true,
+                     const bool at_end = true, const bool neg = true);
 }
