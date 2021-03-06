@@ -22,7 +22,7 @@ namespace Mud::Session
         Interface(Net::Connection &connection);
         Interface(const Interface &rhs) = delete;
         Interface(Interface &&rhs) = delete;
-        ~Interface();
+        ~Interface() noexcept;
 
         //--- public operators ---
         Interface &operator=(const Interface &rhs) = delete;
@@ -30,7 +30,7 @@ namespace Mud::Session
 
         //--- public methods ---
         void process(const std::string &input = "");
-        bool validLogin() const;
+        bool validLogin() const noexcept;
 
     private:
         //--- private properties ---
