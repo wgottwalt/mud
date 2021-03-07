@@ -1,3 +1,6 @@
+ADD_EXECUTABLE        (TestAnsi Ansi.cxx)
+TARGET_LINK_LIBRARIES (TestAnsi Support)
+
 ADD_EXECUTABLE        (TestLogReceiver LogReceiver.cxx)
 TARGET_LINK_LIBRARIES (TestLogReceiver Log Support)
 
