@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <functional>
 #include "String.hxx"
 
 namespace Mud::Support::String
@@ -29,8 +31,8 @@ namespace Mud::Support::String
             return str;
         }
 
-        std::string __trim(std::string &&str, Impl::TestFunc cb, const bool at_begin,
-                           const bool at_end, const bool neg)
+        std::string __trim(std::string &&str, TestFunc cb, const bool at_begin, const bool at_end,
+                           const bool neg)
         {
             if (at_begin)
                 while (!str.empty() && (neg && cb(*(str.begin()))))
@@ -41,7 +43,26 @@ namespace Mud::Support::String
 
             return str;
         }
+
+        std::string __clean(std::string &&str, const char delim)
+        {
+            std::remove(str.begin(), str.end(), delim);
+
+            return str;
+        }
+
+        std::string __clean(std::string &&str, Impl::TestFunc cb, const bool neg)
+        {
+            if (neg)
+                std::remove_if(str.begin(), str.end(), std::not_fn(cb));
+            else
+                std::remove_if(str.begin(), str.end(), cb);
+
+            return str;
+        }
     }
+
+    //--- trim functions ---
 
     std::string trim(const std::string &str, const bool at_begin, const bool at_end)
     {
@@ -80,5 +101,31 @@ namespace Mud::Support::String
                      const bool neg)
     {
         return Impl::__trim(std::move(str), cb, at_begin, at_end, neg);
+    }
+
+    //--- removal functions ---
+
+    std::string clean(const std::string &str, const char delim)
+    {
+        std::string tmp(str);
+
+        return Impl::__clean(std::move(tmp), delim);
+    }
+
+    std::string clean(std::string &&str, const char delim)
+    {
+        return Impl::__clean(std::move(str), delim);
+    }
+
+    std::string clean(const std::string &str, Impl::TestFunc cb, const bool neg)
+    {
+        std::string tmp(str);
+
+        return Impl::__clean(std::move(tmp), cb, neg);
+    }
+
+    std::string clean(std::string &&str, Impl::TestFunc cb, const bool neg)
+    {
+        return Impl::__clean(std::move(str), cb, neg);
     }
 }

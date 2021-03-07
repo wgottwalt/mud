@@ -23,6 +23,7 @@ namespace Mud::Support::String
         return strm.str();
     }
 
+    //--- trim functions ---
     std::string trim(const std::string &str, const bool at_begin = true, const bool at_end = true);
     std::string trim(std::string &&str, const bool at_begin = true, const bool at_end = true);
     std::string trim(const std::string &str, const char delim, const bool at_begin = true,
@@ -33,4 +34,10 @@ namespace Mud::Support::String
                      const bool at_end = true, const bool neg = true);
     std::string trim(std::string &&str, Impl::TestFunc cb, const bool at_begin = true,
                      const bool at_end = true, const bool neg = true);
+
+    //--- removal functions ---
+    std::string clean(const std::string &str, const char delim);
+    std::string clean(std::string &&str, const char delim);
+    std::string clean(const std::string &str, Impl::TestFunc cb, const bool neg = true);
+    std::string clean(std::string &&str, Impl::TestFunc cb, const bool neg = true);
 }
