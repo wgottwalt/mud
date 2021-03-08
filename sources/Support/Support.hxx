@@ -5,5 +5,6 @@
 #include "Concepts.hxx"
 #include "String.hxx"
 #include "StringList.hxx"
+#include "Telnet.hxx"
 #include "ThreadPool.hxx"
 #include "Time.hxx"
