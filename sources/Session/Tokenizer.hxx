@@ -6,8 +6,19 @@ namespace Mud::Session
 {
     class Tokenizer {
     public:
+        //--- public types and constants ---
+        enum class Type : uint8_t {
+            Text,
+            Telnet
+        };
+
+        struct Token {
+            std::string seq;
+            Type type;
+        };
+
         //--- public constructors ---
-        Tokenizer(const std::string &str, const bool ascii = true);
+        Tokenizer(const std::string &str);
         Tokenizer(const Tokenizer &rhs);
         Tokenizer(Tokenizer &&rhs) noexcept;
         ~Tokenizer() noexcept;
@@ -20,16 +31,14 @@ namespace Mud::Session
 
         //--- public methods ---
         std::string input() const noexcept;
-        bool ascii() const noexcept;
         std::string nextToken();
-        void reset(const std::string &str, const bool ascii = true);
-        void reset(std::string &&rhs, const bool ascii = true) noexcept;
-        void reset(const bool ascii = true) noexcept;
+        void reset(const std::string &str);
+        void reset(std::string &&rhs) noexcept;
+        void reset() noexcept;
 
     private:
         //--- private properties ---
         std::string _input;
         size_t _pos;
-        bool _ascii;
     };
 }

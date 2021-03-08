@@ -5,18 +5,18 @@ using namespace Mud::Session;
 
 //--- public constructors ---
 
-Tokenizer::Tokenizer(const std::string &str, const bool ascii)
-: _input(str), _pos(0), _ascii(ascii)
+Tokenizer::Tokenizer(const std::string &str)
+: _input(str), _pos(0)
 {
 }
 
 Tokenizer::Tokenizer(const Tokenizer &rhs)
-: _input(rhs._input), _pos(rhs._pos), _ascii(rhs._ascii)
+: _input(rhs._input), _pos(rhs._pos)
 {
 }
 
 Tokenizer::Tokenizer(Tokenizer &&rhs) noexcept
-: _input(std::move(rhs._input)), _pos(std::move(rhs._pos)), _ascii(std::move(rhs._ascii))
+: _input(std::move(rhs._input)), _pos(std::move(rhs._pos))
 {
 }
 
@@ -32,7 +32,6 @@ Tokenizer &Tokenizer::operator=(const Tokenizer &rhs)
     {
         _input = rhs._input;
         _pos = rhs._pos;
-        _ascii = rhs._ascii;
     }
 
     return *this;
@@ -44,7 +43,6 @@ Tokenizer &Tokenizer::operator=(Tokenizer &&rhs) noexcept
     {
         _input = std::move(rhs._input);
         _pos = std::move(rhs._pos);
-        _ascii = std::move(rhs._ascii);
     }
 
     return *this;
@@ -53,8 +51,7 @@ Tokenizer &Tokenizer::operator=(Tokenizer &&rhs) noexcept
 bool Tokenizer::operator==(const Tokenizer &rhs) const noexcept
 {
     return _input == rhs._input &&
-           _pos == rhs._pos &&
-           _ascii == rhs._ascii;
+           _pos == rhs._pos;
 }
 
 bool Tokenizer::operator!=(const Tokenizer &rhs) const noexcept
@@ -69,76 +66,49 @@ std::string Tokenizer::input() const noexcept
     return _input;
 }
 
-bool Tokenizer::ascii() const noexcept
-{
-    return _ascii;
-}
-
 std::string Tokenizer::nextToken()
 {
     std::string result;
     std::string::iterator it = std::next(_input.begin(), _pos);
     bool done = false;
 
-    if (_ascii)
+    while (it != _input.end())
     {
-        while (it != _input.end())
+        if (!std::isspace(*it))
         {
-            if (std::isgraph(*it))
-            {
-                if (done)
-                    break;
-                result += *it;
-            }
-            else
-                done = true;
-
-            ++it;
+            if (done)
+                break;
+            result += *it;
         }
-    }
-    else
-    {
-        while (it != _input.end())
-        {
-            if (!std::isspace(*it))
-            {
-                if (done)
-                    break;
-                result += *it;
-            }
-            else
-                done = true;
+        else
+            done = true;
 
-            ++it;
-        }
+        ++it;
     }
     _pos = std::distance(_input.begin(), it);
 
     return result;
 }
 
-void Tokenizer::reset(const std::string &str, const bool ascii)
+void Tokenizer::reset(const std::string &str)
 {
     if (!str.empty())
     {
         _input = str;
         _pos = 0;
-        _ascii = ascii;
     }
 }
 
-void Tokenizer::reset(std::string &&str, const bool ascii) noexcept
+void Tokenizer::reset(std::string &&str) noexcept
 {
     if (!str.empty())
     {
         _input = std::move(str);
         _pos = 0;
-        _ascii = ascii;
     }
 }
 
-void Tokenizer::reset(const bool ascii) noexcept
+void Tokenizer::reset() noexcept
 {
     _pos = 0;
-    _ascii = ascii;
 }

@@ -1,11 +1,21 @@
 #include "Interface.hxx"
-#include "Defaults.hxx"
 #include "Net/Connection.hxx"
+#include "Support/Ansi.hxx"
 #include "Support/String.hxx"
+#include "Support/Telnet.hxx"
 
 using namespace Mud::Session;
+namespace A = Mud::Support::Ansi;
 namespace S = Mud::Support::String;
-namespace T = Mud::Session::Telnet;
+namespace T = Mud::Support::Telnet;
+
+//--- internal stuff ---
+
+namespace Mud::Support::Telnet
+{
+    const std::string EchoOff("");
+    const std::string EchoOn("");
+}
 
 //--- public constructors ---
 
@@ -26,19 +36,19 @@ void Interface::process(const std::string &input)
     switch (_state)
     {
         case State::New:
-            _connection.send(S::str("Test MUD!", T::NL));
+            _connection.send(S::str("Test MUD!", T::NewLine));
             _connection.send("username: ");
             _state = State::Username;
             break;
 
         case State::Username:
-            _connection.send(S::str(T::EOFF, "password: "));
+            _connection.send(S::str(T::EchoOff, "password: "));
             _username = S::trim(input);
             _state = State::Password;
             break;
 
         case State::Password:
-            _connection.send(S::str(T::EON, T::NL, "logged in...", T::NL));
+            _connection.send(S::str(T::EchoOn, T::NewLine, "logged in...", T::NewLine));
             _connection.send(_username + "> ");
             _password = S::trim(input);
             _state = State::Established;
