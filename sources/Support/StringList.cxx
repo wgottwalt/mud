@@ -32,7 +32,7 @@ List::List(const std::string &str, const std::string &separator)
 {
 }
 
-List::List(std::string &&str)
+List::List(std::string &&str) noexcept
 : _data{std::move(str)}
 {
 }
@@ -47,7 +47,7 @@ List::List(const List &rhs)
 {
 }
 
-List::List(List &&rhs)
+List::List(List &&rhs) noexcept
 : _data(std::move(rhs._data))
 {
 }
@@ -66,7 +66,7 @@ List &List::operator=(const List &rhs)
     return *this;
 }
 
-List &List::operator=(List &&rhs)
+List &List::operator=(List &&rhs) noexcept
 {
     if (this != &rhs)
         _data = std::move(rhs._data);
@@ -74,12 +74,12 @@ List &List::operator=(List &&rhs)
     return *this;
 }
 
-bool List::operator==(const List &rhs) const
+bool List::operator==(const List &rhs) const noexcept
 {
     return _data == rhs._data;
 }
 
-bool List::operator!=(const List &rhs) const
+bool List::operator!=(const List &rhs) const noexcept
 {
     return !(*this == rhs);
 }

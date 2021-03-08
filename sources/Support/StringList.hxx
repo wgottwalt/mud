@@ -14,17 +14,17 @@ namespace Mud::Support::String
         List(const std::string &str);
         List(const size_t count, const std::string &str);
         List(const std::string &str, const std::string &separator);
-        List(std::string &&str);
+        List(std::string &&str) noexcept;
         List(const std::initializer_list<std::string> &list);
         List(const List &rhs);
-        List(List &&rhs);
+        List(List &&rhs) noexcept;
         ~List() noexcept;
 
         //--- public operators ---
         List &operator=(const List &rhs);
-        List &operator=(List &&rhs);
-        bool operator==(const List &rhs) const;
-        bool operator!=(const List &rhs) const;
+        List &operator=(List &&rhs) noexcept;
+        bool operator==(const List &rhs) const noexcept;
+        bool operator!=(const List &rhs) const noexcept;
 
         //--- public methods ---
         std::string &at(const size_t pos);
