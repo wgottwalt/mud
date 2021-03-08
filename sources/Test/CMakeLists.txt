@@ -7,6 +7,9 @@ TARGET_LINK_LIBRARIES (TestLogReceiver Log Support)
 ADD_EXECUTABLE        (TestStringList StringList.cxx)
 TARGET_LINK_LIBRARIES (TestStringList Support)
 
+ADD_EXECUTABLE        (TestTelnet Telnet.cxx)
+TARGET_LINK_LIBRARIES (TestTelnet Support)
+
 ADD_EXECUTABLE        (TestThreadPool ThreadPool.cxx)
 TARGET_LINK_LIBRARIES (TestLogReceiver Support)
 
