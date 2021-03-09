@@ -18,12 +18,12 @@ Sender::Sender(const Sender &rhs)
 {
 }
 
-Sender::Sender(Sender &&rhs)
+Sender::Sender(Sender &&rhs) noexcept
 : _receiver(Receiver::instance()), _component(std::move(rhs._component))
 {
 }
 
-Sender::~Sender()
+Sender::~Sender() noexcept
 {
 }
 
@@ -37,7 +37,7 @@ Sender &Sender::operator=(const Sender &rhs)
     return *this;
 }
 
-Sender &Sender::operator=(Sender &&rhs)
+Sender &Sender::operator=(Sender &&rhs) noexcept
 {
     if (this != &rhs)
         _component = std::move(rhs._component);

@@ -13,12 +13,12 @@ namespace Mud::Log
         //--- public constructors ---
         Sender(const std::string &name = "undef");
         Sender(const Sender &rhs);
-        Sender(Sender &&rhs);
-        virtual ~Sender();
+        Sender(Sender &&rhs) noexcept;
+        virtual ~Sender() noexcept;
 
         //--- public operators ---
         Sender &operator=(const Sender &rhs);
-        Sender &operator=(Sender &&rhs);
+        Sender &operator=(Sender &&rhs) noexcept;
 
         //--- public methods ---
         void setComponentName(const std::string &name);

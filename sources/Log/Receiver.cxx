@@ -66,7 +66,7 @@ void Receiver::setConsoleOutput(std::ostream &os)
     _console.rdbuf(os.rdbuf());
 }
 
-void Receiver::addEntry(Entry &&entry)
+void Receiver::addEntry(Entry &&entry) noexcept
 {
     if (!_log_to_console && !_log_to_file)
         return;
@@ -115,7 +115,7 @@ Receiver::Receiver(const std::string &path, const std::string &info, const std::
     }
 }
 
-Receiver::~Receiver()
+Receiver::~Receiver() noexcept
 {
 }
 

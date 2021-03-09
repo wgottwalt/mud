@@ -30,13 +30,13 @@ namespace Mud::Log
         bool logToFile() const noexcept;
         std::string logFilePath(const Level level) const;
         void setConsoleOutput(std::ostream &os);
-        void addEntry(Entry &&entry);
+        void addEntry(Entry &&entry) noexcept;
 
     protected:
         //--- protected constructors ---
         Receiver(const std::string &path, const std::string &info, const std::string &warn,
                  const std::string &error, const std::string &fatal, const std::string &debug);
-        ~Receiver();
+        ~Receiver() noexcept;
 
         //--- protected methods ---
         bool isLogToFileAvailable();
