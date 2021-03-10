@@ -9,17 +9,17 @@ namespace STR = Mud::Support::String;
 //--- public constructors ---
 
 Sender::Sender(const std::string &name)
-: _receiver(Receiver::instance()), _component(name)
+: _component(name)
 {
 }
 
 Sender::Sender(const Sender &rhs)
-: _receiver(Receiver::instance()), _component(rhs._component)
+: _component(rhs._component)
 {
 }
 
 Sender::Sender(Sender &&rhs) noexcept
-: _receiver(Receiver::instance()), _component(std::move(rhs._component))
+: _component(std::move(rhs._component))
 {
 }
 
@@ -105,5 +105,5 @@ void Sender::commit(const Level level, const T::Timepoint &stamp, const std::str
 {
     Entry entry{level, stamp, component, std::move(message)};
 
-    _receiver.addEntry(std::move(entry));
+    Receiver::instance().addEntry(std::move(entry));
 }

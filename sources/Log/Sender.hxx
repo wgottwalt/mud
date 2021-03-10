@@ -43,7 +43,6 @@ namespace Mud::Log
 
     private:
         //--- private properties ---
-        Receiver &_receiver;
         std::string _component;
     };
 }
