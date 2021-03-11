@@ -32,8 +32,8 @@ namespace Mud::Support::Telnet
         Status = 5,
         Timing = 6,
         TType = 24,
-        Size = 31,
-        TSpeed  = 32,
+        TSize = 31,
+        TSpeed = 32,
         RFlowCtrl = 33,
         LineMode = 34,
         EnvVar = 36
@@ -55,10 +55,39 @@ namespace Mud::Support::Telnet
     }
 
     template <Concepts::Number T>
-    constexpr bool istelnet(const T)
+    constexpr bool istelnet(const T val)
     {
-        if constexpr (std::is_convertible_v<T,Control> || std::is_convertible_v<T,Option>)
-            return true;
-        return false;
+        switch (val)
+        {
+            case static_cast<T>(Control::Se):
+            case static_cast<T>(Control::Nop):
+            case static_cast<T>(Control::Dm):
+            case static_cast<T>(Control::Brk):
+            case static_cast<T>(Control::Ip):
+            case static_cast<T>(Control::Ao):
+            case static_cast<T>(Control::Ayt):
+            case static_cast<T>(Control::Ec):
+            case static_cast<T>(Control::El):
+            case static_cast<T>(Control::Ga):
+            case static_cast<T>(Control::Sb):
+            case static_cast<T>(Control::Will):
+            case static_cast<T>(Control::Wont):
+            case static_cast<T>(Control::Do):
+            case static_cast<T>(Control::Dont):
+            case static_cast<T>(Control::Iac):
+            case static_cast<T>(Option::Echo):
+            case static_cast<T>(Option::Suppress):
+            case static_cast<T>(Option::Status):
+            case static_cast<T>(Option::Timing):
+            case static_cast<T>(Option::TType):
+            case static_cast<T>(Option::TSize):
+            case static_cast<T>(Option::TSpeed):
+            case static_cast<T>(Option::RFlowCtrl):
+            case static_cast<T>(Option::LineMode):
+            case static_cast<T>(Option::EnvVar):
+                return true;
+            default:
+                return false;
+        }
     }
 }
