@@ -1,7 +1,11 @@
 #include <utility>
 #include "Tokenizer.hxx"
+#include "Support/Casts.hxx"
+#include "Support/Telnet.hxx"
 
 using namespace Mud::Session;
+namespace T = Mud::Support::Telnet;
+using TC = T::Control;
 
 //--- public constructors ---
 
@@ -66,19 +70,32 @@ std::string Tokenizer::input() const noexcept
     return _input;
 }
 
-std::string Tokenizer::nextToken()
+Tokenizer::Token Tokenizer::nextToken()
 {
-    std::string result;
+    Token result{"", Type::Text};
     std::string::iterator it = std::next(_input.begin(), _pos);
     bool done = false;
 
     while (it != _input.end())
     {
-        if (!std::isspace(*it))
+        if (std::isalnum(*it))
         {
             if (done)
                 break;
-            result += *it;
+            result.seq += *it;
+        }
+        else if (*it == enum_cast(TC::Iac))
+        {
+            if (result.seq.empty())
+            {
+                result.seq += *it;
+                result.type = Type::Telnet;
+                readTelnetSequence(++it, result);
+            }
+            else
+                --it;
+
+            break;
         }
         else
             done = true;
@@ -111,4 +128,22 @@ void Tokenizer::reset(std::string &&str) noexcept
 void Tokenizer::reset() noexcept
 {
     _pos = 0;
+}
+
+//--- protected methods ---
+
+void Tokenizer::readTelnetSequence(std::string::iterator &it, Token &token) const
+{
+    while (T::istelnet(*it))
+    {
+        token.seq += *it;
+
+        if (*it == enum_cast(TC::Se))
+        {
+            ++it;
+            break;
+        }
+
+        ++it;
+    }
 }

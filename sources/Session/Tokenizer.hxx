@@ -31,10 +31,14 @@ namespace Mud::Session
 
         //--- public methods ---
         std::string input() const noexcept;
-        std::string nextToken();
+        Token nextToken();
         void reset(const std::string &str);
         void reset(std::string &&rhs) noexcept;
         void reset() noexcept;
+
+    protected:
+        //--- protected methods ---
+        void readTelnetSequence(std::string::iterator &it, Token &token) const;
 
     private:
         //--- private properties ---

@@ -14,13 +14,13 @@ int32_t main(int32_t argc, char **argv)
         input += argv[argc - 1];
 
         S::Tokenizer t(input);
-        std::string token;
+        S::Tokenizer::Token token;
         size_t i = 0;
 
         std::cout << "tokens: ";
-        while (!(token = t.nextToken()).empty())
+        while (!(token = t.nextToken()).seq.empty())
         {
-            std::cout << "(" << i << ")" << token;
+            std::cout << "(" << i << ")" << token.seq;
             ++i;
         }
         std::cout << std::endl;
