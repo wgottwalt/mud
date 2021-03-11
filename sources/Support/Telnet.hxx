@@ -53,4 +53,12 @@ namespace Mud::Support::Telnet
 
         return result;
     }
+
+    template <Concepts::Number T>
+    constexpr bool istelnet(const T)
+    {
+        if constexpr (std::is_convertible_v<T,Control> || std::is_convertible_v<T,Option>)
+            return true;
+        return false;
+    }
 }
