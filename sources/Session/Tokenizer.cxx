@@ -84,7 +84,7 @@ Tokenizer::Token Tokenizer::nextToken()
                 break;
             result.seq += *it;
         }
-        else if (*it == enum_cast(TC::Iac))
+        else if (static_cast<uint8_t>(*it) == enum_cast(TC::Iac))
         {
             if (result.seq.empty())
             {
@@ -92,8 +92,6 @@ Tokenizer::Token Tokenizer::nextToken()
                 result.type = Type::Telnet;
                 readTelnetSequence(++it, result);
             }
-            else
-                --it;
 
             break;
         }
