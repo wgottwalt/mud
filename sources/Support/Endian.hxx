@@ -4,17 +4,20 @@
 
 namespace Mud::Support::Endian
 {
+    namespace Impl
+    {
+        template <typename T>
+        concept EndianNumber = requires (T){ (sizeof (T) >= 8) && (sizeof (T) <= 64); } &&
+                                        std::is_integral_v<T> || std::is_floating_point_v<T>;
+    }
+
     enum class Order : int32_t {
         Little = __ORDER_LITTLE_ENDIAN__,
         Big = __ORDER_BIG_ENDIAN__,
         Native = __BYTE_ORDER__
     };
 
-    template <typename T>
-    concept EndianNumber = requires (T){ (sizeof (T) >= 8) && (sizeof (T) <= 64); } &&
-                                    std::is_integral_v<T> || std::is_floating_point_v<T>;
-
-    template <EndianNumber T>
+    template <Impl::EndianNumber T>
     constexpr inline T swap(const T val) noexcept
     {
         if constexpr (sizeof (T) == sizeof (uint16_t))
@@ -31,7 +34,7 @@ namespace Mud::Support::Endian
         return val;
     }
 
-    template <EndianNumber T>
+    template <Impl::EndianNumber T>
     constexpr inline T toBE(const T val) noexcept
     {
         if constexpr (Order::Native == Order::Little)
@@ -40,7 +43,7 @@ namespace Mud::Support::Endian
             return val;
     }
 
-    template <EndianNumber T>
+    template <Impl::EndianNumber T>
     constexpr inline T fromBE(const T val) noexcept
     {
         if constexpr (Order::Native == Order::Little)
@@ -49,7 +52,7 @@ namespace Mud::Support::Endian
             return val;
     }
 
-    template <EndianNumber T>
+    template <Impl::EndianNumber T>
     constexpr inline T toLE(const T val) noexcept
     {
         if constexpr (Order::Native == Order::Little)
@@ -58,7 +61,7 @@ namespace Mud::Support::Endian
             return swap(val);
     }
 
-    template <EndianNumber T>
+    template <Impl::EndianNumber T>
     constexpr inline T fromLE(const T val) noexcept
     {
         if constexpr (Order::Native == Order::Little)
